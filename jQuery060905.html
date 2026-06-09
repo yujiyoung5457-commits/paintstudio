@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="kor">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./reset.css">
+    <style>
+        #container{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        #toolBar{
+            width: 100%;
+            height: 70px;
+            background-color: rgb(167, 167, 167);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-left: 30px;
+            gap: 30px;
+            
+        }
+        #toolBar div input{
+            color: black;
+        }
+        #toolBar div *{
+            color: rgb(250, 250, 250);
+            font-weight: 400;
+            margin-right: 10px;
+            gap: 50px;
+        }
+        #toolBar button{
+            border: none;
+            background-color: rgb(53, 53, 53);
+            color: aliceblue;
+            padding: 10px;
+            padding-left: 15px;
+            padding-right: 15px;
+            border-radius: 10px;
+            /* display: flex; */
+            /* justify-content: space-between; */
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="toolBar">
+            <div>
+                <label for="strokeColor">Brush color
+                <input id="strokeColor" type="color" value="#000" />
+                </label>
+
+                <label for="lineWidth">Stroke
+                <input id="lineWidth" type="number" value="2" min="1" max="50"/>
+                </label>
+
+                <label for="back">Background color
+                <input id="back" type="color" value="#230"/>
+                </label>
+
+                <button id="reset">Reset</button>
+                <button id="download">Down load</button>
+
+            </div>
+        </div>
+        <canvas id="cvs"></canvas>
+    </div>
+
+    <script>
+        //캔벗 안에 그릴 수 있도록
+        const canvas=document.querySelector("#cvs")
+        const tool=document.querySelector("#toolBar")
+
+        canvas.width=window.innerWidth  //윈도우가 가진 전채를 넣어줌 =100%
+        canvas.height=window.innerHeight-tool.offsetHeight; //윈도우의 전채 높이를 넣어줌+ 툴바의 높ㅇㅣ를 가져와 뻄 
+
+        let canvasOffsetX=canvas.offsetLeft //캔버스의 위치를 알려줄 (가로)
+        let canvasOffsetY=canvas.offsetTop //캔버스의 위치를 알려줌 (세로)
+
+        let isDrawing=false; //아직 드로잉을 하지 않아서  false로 
+
+        //포인터를 기억하는 녀석/ 좌표를 파악하는 것
+        let startX
+        let startY
+        let lineWidth=2
+        const ctx=canvas.getContext("2d")
+
+        tool.addEventListener("change", function(e){ //이벤트가 일어났을 때 
+            //선 색과 굵기를 변경 
+            if(e.target.id==="strokeColor"){
+                ctx.strokeStyle=e.target.value;
+            }
+            if(e.target.id==="lineWidth"){
+                lineWidth=e.target.value 
+            }
+        })
+        tool.addEventListener("change", function(e){
+            if(e.target.id==="back"){
+                canvas.style.backgroundColor=e.target.value
+                // ctx.fillStyle=e.target.value
+                // ctx.fillRect(0, 0, canvas.width, canvas.height)
+                // ctx.fill()
+            }
+        })
+
+        canvas.addEventListener("mousedown", function(e){
+            isDrawing=true
+            startX=e.clientX
+            startY=e.clientY
+            
+        })
+        canvas.addEventListener("mousemove", function(e){
+            if(!isDrawing)return
+            ctx.lineWidth=lineWidth
+            ctx.lineCap='round'
+            //그 포인터부터 선을 그려랴
+            ctx.lineTo(e.clientX, e.clientY-canvasOffsetY) //화면전체를 얘기하는 Y에서 캔버스 오프샛 Y를 빼줘야함
+            ctx.stroke()
+        })
+        canvas.addEventListener("mouseup", function(){
+            isDrawing=false
+            ctx.beginPath()
+        })
+        //지우기 버튼 쿨바에서 이벤트가 일어남 
+        tool.addEventListener("click", function(e){
+            if(e.target.id==="reset"){
+                ctx.clearRect(0,0, canvas.width, canvas.height)
+            }
+        })
+        tool.addEventListener("click", function(e){
+            //<a href="#">홈으로</a>
+            //<a href="img/abc.jpg" download>다운</a> download가 명령어임
+            if(e.target.id==="download"){
+                let link=document.createElement("a")
+                link.download="drawing.png"   //만들어질 파일 이름이다. 
+                link.href=canvas.toDataURL("image/jpg")  //image/png도 가능함 
+                link.click()
+
+            }
+        })
+
+
+    </script>
+</body>
+</html>
