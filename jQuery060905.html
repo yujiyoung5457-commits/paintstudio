@@ -116,10 +116,10 @@
         })
         tool.addEventListener("change", function(e){
             if(e.target.id==="back"){
-                canvas.style.backgroundColor=e.target.value
-                // ctx.fillStyle=e.target.value
-                // ctx.fillRect(0, 0, canvas.width, canvas.height)
-                // ctx.fill()
+                // canvas.style.backgroundColor=e.target.value
+                ctx.fillStyle=e.target.value
+                ctx.fillRect(0, 0, canvas.width, canvas.height)
+                ctx.fill()
             }
         })
 
@@ -152,7 +152,7 @@
             //<a href="img/abc.jpg" download>다운</a> download가 명령어임
             if(e.target.id==="download"){
                 let link=document.createElement("a")
-                link.download="drawing.png"   //만들어질 파일 이름이다. 
+                link.download="drawing.jpg"   //만들어질 파일 이름이다. 
                 link.href=canvas.toDataURL("image/jpg")  //image/png도 가능함 
                 link.click()
 
