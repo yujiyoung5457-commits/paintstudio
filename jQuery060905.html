@@ -21,7 +21,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-left: 30px;
+            padding-left: 50px;
             gap: 30px;
             
         }
@@ -45,12 +45,24 @@
             /* display: flex; */
             /* justify-content: space-between; */
         }
+        .left{
+            width: 50%;
+            padding-left: 50px;
+        }
+        .right{
+            display: flex;
+            align-items: center;
+            justify-content: end;
+            padding-right: 30px;
+            width: 50%;
+            gap: 100px;
+        }
     </style>
 </head>
 <body>
     <div id="container">
         <div id="toolBar">
-            <div>
+            <div class="left">
                 <label for="strokeColor">Brush color
                 <input id="strokeColor" type="color" value="#000" />
                 </label>
@@ -62,11 +74,14 @@
                 <label for="back">Background color
                 <input id="back" type="color" value="#230"/>
                 </label>
+                </div>
 
+                <div class="right">
                 <button id="reset">Reset</button>
                 <button id="download">Down load</button>
+                </div>
 
-            </div>
+            
         </div>
         <canvas id="cvs"></canvas>
     </div>
