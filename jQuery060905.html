@@ -133,6 +133,7 @@
             if(!isDrawing)return
             ctx.lineWidth=lineWidth
             ctx.lineCap='round'
+            ctx.lineJoin='round'
             //그 포인터부터 선을 그려랴
             ctx.lineTo(e.clientX, e.clientY-canvasOffsetY) //화면전체를 얘기하는 Y에서 캔버스 오프샛 Y를 빼줘야함
             ctx.stroke()
